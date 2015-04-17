@@ -1,0 +1,14 @@
+{
+    "name": "teste/hellomicroframeworks",
+    "description": "Teste de integração entre vários micros frameworks",
+    "authors": [
+        {
+            "name": "Evandro Zanatta",
+            "email": "hemanstifler@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "2.*",
+        "wixel/gump": "dev-master"
+    }
+}
