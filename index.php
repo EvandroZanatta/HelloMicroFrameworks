@@ -27,11 +27,11 @@ function connectDB(){
 
 function validInput($name){
     $data = array(
-        'nome' => $name
+        'name' => $name
     );
     
     $validated = GUMP::is_valid($data, array(
-        'nome' => 'required|valid_name'
+        'name' => 'required|valid_name'
     ));
     
     if($validated === true) {
