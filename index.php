@@ -2,9 +2,8 @@
 
 header('Content-Type: text/html; charset=utf-8');
 
-require 'vendor/medoo/medoo.min.php';
+require_once 'vendor/medoo/medoo.min.php';
 require 'vendor/autoload.php';
-
 
 $app = new \Slim\Slim(array(
     'debug' => true
@@ -12,7 +11,21 @@ $app = new \Slim\Slim(array(
 
 $gump = new GUMP();
 
-function validaEntrada($name){
+
+function connectDB(){
+    $database = new medoo([
+    	'database_type' => 'mysql',
+    	'database_name' => 'c9',
+    	'server' => '0.0.0.0',
+    	'username' => 'evandrozanatta',
+    	'password' => '',
+    	'charset' => 'utf8'
+	]);
+	
+	return $database;
+}
+
+function validInput($name){
     $data = array(
         'nome' => $name
     );
@@ -28,10 +41,35 @@ function validaEntrada($name){
     }    
 }
 
+function addUser($name){
+    
+    $database = connectDB();
+    
+    $count = $database->count("users", [
+    	"name" => $name
+    ]);
+    
+    if($count > 0){
+        return false;
+    }
+    
+    $database->insert("users", [
+    	"name" => $name
+    ]);
+    
+    return true;
+
+}
 
 $app->get('/hello/:name', function ($name) {
-    if(validaEntrada($name)){
-        echo "Hello, " . utf8_decode($name);    
+    if(validInput($name)){
+        
+        if(addUser($name)){
+            echo "Ola, " . utf8_decode($name);        
+        }else{
+            echo utf8_decode("Usuário já cadastrado!");
+        }
+        
     }else{
         echo utf8_decode("Você deve ser um humano para usar este site");
     }
